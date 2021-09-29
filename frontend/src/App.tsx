@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+interface Error {
+  stack: string;
+}
 
+function App() {
   const [loading, setLoading] = useState(false);
   const [deployState, setDeployState] = useState("Deploy");
   const [contractAddress, setContractAddress] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [desiredValue, setDesiredValue] = useState('test');
   const [value, setValue] = useState("Get Value");
 
@@ -30,7 +33,7 @@ function App() {
         setDeployState("Redeploy");
       }
     } catch (err) {
-      setErrorMsg(err.stack)
+      setErrorMsg((err as Error).stack)
       setDeployState("Error! - Retry Deploy");
     }
     setLoading(false);
@@ -52,7 +55,7 @@ function App() {
         setErrorMsg(error)
       }
     } catch(err) {
-      setErrorMsg(err.stack)
+      setErrorMsg((err as Error).stack)
     }
     setLoading(false);
   }
@@ -69,19 +72,20 @@ function App() {
         setValue(x);
       }
     } catch(err) {
-      setErrorMsg(err.stack)
+      setErrorMsg((err as Error).stack)
     }
     setLoading(false);
   }
 
-  function handleChange(event) {
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setDesiredValue(event.target.value);
   }
+
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" aria-busy={loading}/>        
+        <img src={logo} className="App-logo" alt="logo" aria-busy={loading}/>
         <p>
           <button type="button" className="App-button" disabled={loading} onClick={deployContract}>{deployState} Contract</button>
         </p>
@@ -95,7 +99,7 @@ function App() {
         <p>
           <button type="button" className="App-button" disabled={loading || !contractAddress} onClick={getContractValue}>{value}</button>
         </p>
-        { errorMsg && <pre class="App-error">
+        { errorMsg && <pre className="App-error">
           Error: {errorMsg}
         </pre>}
       </header>
