@@ -1,0 +1,21 @@
+.BookList-Table {
+  border-collapse: collapse;
+}
+
+.BookList-Header {
+  font-weight: bolder;
+}
+
+.BookList-Entry > td:first-child{
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.BookList-Entry > td {
+  padding: 0.2em 0.4em;
+  border-width: 0;
+}
+.BookList-Entry:hover {
+  background-color: #F2F2F2;
+}

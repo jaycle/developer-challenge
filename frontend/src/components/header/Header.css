@@ -1,0 +1,41 @@
+.Header {
+  background-color: #eff0fa;
+  height: 4em;
+}
+
+.Header-Container {
+  display: flex;
+}
+
+.Header-Logo {
+  flex: 1 0 4em;
+  max-height: 4em;
+  max-width: 8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Header-Logo > img {
+  max-height: 90%;
+}
+
+.Header-Title {
+  flex: 2 0 auto;
+  align-self: center;
+}
+.Header-Title > h1 {
+  margin: 0 1em;
+}
+
+.Header-Toggle {
+  flex: 1 0 auto;
+  align-self: center;
+}
+.Header-Toggle > label {
+  padding: 0 1em;
+}
+.Header-Toggle > select {
+  width: 50%;
+  height: 2.5em;;
+}

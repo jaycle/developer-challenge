@@ -1,0 +1,35 @@
+.Body {
+  height: calc(100% - 4em);
+  display: flex;
+}
+
+.Body-Nav {
+  flex: 0 1 20%;
+  min-width: 190px;
+  background-color: #3942C1;
+}
+.Body-Nav ul {
+  padding: 0;
+}
+
+.Body-Nav li {
+  height: 3em;
+  line-height: 3em;
+  cursor: pointer;
+  font-size: large;
+  list-style: none;
+  color: #EE34A8;
+  text-align: left;
+  padding-left: 2em;
+  background-color: #F2F2F2;
+  border: #CCCCCC;
+  border-width: 2px 0 0 0;
+  border-style: solid;
+}
+.Body-Nav li:hover {
+  background-color: #CCCCCC;
+}
+
+.Body-Content {
+  flex: 1 0 auto;
+}

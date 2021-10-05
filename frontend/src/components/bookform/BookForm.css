@@ -1,0 +1,62 @@
+.BookForm {
+  text-align: left;
+  padding: 2em 1em;
+  max-width: 600px;
+}
+
+.BookForm-Input {
+  margin: 0.3em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.BookForm-Input > label {
+  text-align: left;
+  flex: 1 0 0;
+  padding: 0 0.5em;
+}
+.BookForm-Input > input {
+  text-align: left;
+  flex: 4 0 auto;
+  padding-bottom: 0.3em;
+}
+@media screen and (min-width:630px) {
+  .BookForm-Input {
+    flex-direction: row;
+  }
+  .BookForm-Input > label {
+    text-align: right;
+  }
+}
+
+.BookForm-Submit {
+  display: flex;
+  margin: 1em;
+  justify-content: right;
+}
+
+.BookForm-Submit input {
+  font-size: 1em;
+  padding: 4px 12px;
+  border-radius: 16px;
+  border-width: 0px;
+  background-color: #EE34A8;
+  color: #EFF0FA;
+  cursor: pointer;
+}
+.BookForm-Input input:disabled {
+  cursor: not-allowed;
+}
+
+.BookForm-Info {
+  background-color: #26C1DD;
+  border-radius: 13px;
+  display: flex;
+  min-height: 2em;
+  align-items: center;
+}
+.BookForm-Info-X {
+  font-weight: bolder;
+  padding: 8px;
+  margin: 0 1em;
+}
