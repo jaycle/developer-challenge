@@ -2,7 +2,7 @@
   "name": "kaleido-dapp-backend",
   "version": "0.1.0",
   "description": "Backend for the kaleido-dapp",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha test/*.js test/**/*.js",
     "start": "node ."
@@ -26,9 +26,13 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "node-stream-zip": "^1.8.2",
+    "pg": "^8.7.1",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "swagger-client": "^3.9.4"
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.2.0",
+    "swagger-client": "^3.9.4",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",

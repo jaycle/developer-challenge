@@ -1,24 +1,26 @@
-const request = require('request-promise-native')
 const express = require('express');
-const app = express();
-const archiver = require('archiver');
 const Swagger = require('swagger-client');
-const {URL} = require('url');
+const db = require('../db/models');
 const bodyparser = require('body-parser');
+const bookRouter = require('./bookRouter');
+const branchRouter = require('./branchRouter');
+const { initContract } = require ('./block.js');
 
 const {
-  KALEIDO_REST_GATEWAY_URL,
   KALEIDO_AUTH_USERNAME,
   KALEIDO_AUTH_PASSWORD,
   PORT,
-  FROM_ADDRESS,
-  CONTRACT_MAIN_SOURCE_FILE,
-  CONTRACT_CLASS_NAME
-} = require('./config');
+  FROM_ADDRESS
+} = require('../config');
 
+const app = express();
 let swaggerClient; // Initialized in init()
 
 app.use(bodyparser.json());
+app.use('/api/books', bookRouter);
+app.use('/api/branches', branchRouter);
+db.sequelize.authenticate();
+
 
 app.post('/api/contract', async (req, res) => {
   // Note: we really only want to deploy a new instance of the contract
@@ -76,49 +78,9 @@ app.get('/api/contract/:address/value', async (req, res) => {
 });
 
 async function init() {
-
-  // Kaleido example for compilation of your Smart Contract and generating a REST API
-  // --------------------------------------------------------------------------------
-  // Sends the contents of your contracts directory up to Kaleido on each startup.
-  // Kaleido compiles you code and turns into a REST API (with OpenAPI/Swagger).
-  // Instances can then be deployed and queried using this REST API
-  // Note: we really only needed when the contract actually changes.  
-  const url = new URL(KALEIDO_REST_GATEWAY_URL);
-  url.username = KALEIDO_AUTH_USERNAME;
-  url.password = KALEIDO_AUTH_PASSWORD;
-  url.pathname = "/abis";
-  var archive = archiver('zip');  
-  archive.directory("contracts", "");
-  await archive.finalize();
-  let res = await request.post({
-    url: url.href,
-    qs: {
-      compiler: "0.5", // Compiler version
-      source: CONTRACT_MAIN_SOURCE_FILE, // Name of the file in the directory
-      contract: `${CONTRACT_MAIN_SOURCE_FILE}:${CONTRACT_CLASS_NAME}` // Name of the contract in the 
-    },
-    json: true,
-    headers: {
-      'content-type': 'multipart/form-data',
-    },
-    formData: {
-      file: {
-        value: archive,
-        options: {
-          filename: 'smartcontract.zip',
-          contentType: 'application/zip',
-          knownLength: archive.pointer()    
-        }
-      }
-    }
-  });
-  // Log out the built-in Kaleido UI you can use to exercise the contract from a browser
-  url.pathname = res.path;
-  url.search = '?ui';
-  console.log(`Generated REST API: ${url}`);
-  
   // Store a singleton swagger client for us to use
-  swaggerClient = await Swagger(res.openapi, {
+  const spec = await initContract();
+  swaggerClient = await Swagger(spec, {
     requestInterceptor: req => {
       req.headers.authorization = `Basic ${Buffer.from(`${KALEIDO_AUTH_USERNAME}:${KALEIDO_AUTH_PASSWORD}`).toString("base64")}`;
     }
@@ -132,7 +94,7 @@ init().catch(err => {
   console.error(err.stack);
   process.exit(1);
 });
-  
+
 
 module.exports = {
   app
